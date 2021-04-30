@@ -1,29 +1,13 @@
-const cheerio = require("cheerio");
-const { getHtml, getNewsObject } = require("./services/parses.service");
-const {
-  getTitularNewLink,
-  getSecondaryNewsLink,
-  getNoticiasItemLinks,
-} = require("./services/linkcapture.service");
-const url = "https://www.elmostrador.cl/dia/";
-const parseHome = async () => {
-  const $ = await getHtml(url);
-  const titularNewLink = await getTitularNewLink($);
-  const secondaryNewsLink = await getSecondaryNewsLink($);
-  const newsItemLinks = await getNoticiasItemLinks($);
-  parseNotices(titularNewLink, secondaryNewsLink, newsItemLinks);
-};
+require("./config/Config");
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+const cors = require("cors");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
+app.use(require("./route/scraping.route"));
 
-const parseNotices = async (
-  titularNewLink,
-  secondaryNewsLink,
-  newsItemLinks
-) => {
-  const newsObj = await getNewsObject(
-    titularNewLink,
-    secondaryNewsLink,
-    newsItemLinks
-  );
-};
-
-parseHome();
+app.listen(process.env.PORT, () => {
+  console.log(`On Port ${process.env.PORT}!`);
+});
