@@ -17,7 +17,7 @@ const getHtml = async (url) => {
 const getObjByItem = async (url) => {
   try {
     const $ = await getHtml(url);
-    const title = $(".datos-noticias div h2.titulo-single").html();
+    var title = $(".datos-noticias div h2").html();
     const authorAndDate = $(".datos-noticias div p.autor-y-fecha").text();
     var linkImg;
     $(".noticia-single-post figure img").each((index, element) => {
@@ -42,6 +42,16 @@ const getObjByItem = async (url) => {
       "🚀 ~ file: newsbody.service.js ~ line 38 ~ getObjByItem ~ err",
       err
     );
+    const itemObj = [
+      {
+        title: "",
+        authorAndDate: "",
+        img: "",
+        resume: "",
+        body: "",
+      },
+    ];
+    return itemObj;
   }
 };
 

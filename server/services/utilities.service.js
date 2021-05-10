@@ -63,6 +63,16 @@ const validateObject = (obj) => {
   return objValidated;
 };
 
+const randomId = () => {
+  const dateNow = Date.now();
+  const randomNumber = Math.round(Math.abs(Math.random() + 0.5) * 10000000000);
+  let buyOrder = "" + dateNow + randomNumber;
+  if (buyOrder.length >= 26) {
+    buyOrder = randomId();
+  }
+  return buyOrder;
+};
+
 const getObject = async (allLinksArr) => {
   const finalObj = [];
   await Promise.all(
@@ -71,6 +81,7 @@ const getObject = async (allLinksArr) => {
       const objByItemValidated = validateObject(objByItemNotValidated);
       const { title, authoranddate, img, resume, body } = objByItemValidated;
       let newObject = {
+        _id: randomId(),
         title: title,
         authoranddate: authoranddate,
         img: img,
