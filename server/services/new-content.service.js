@@ -29,20 +29,20 @@ const getObjByItem = async (url) => {
       const paragraph = $(element).text().trim();
       newBody.push(paragraph);
     });
-    const itemObj = {
+    const obj = {
       title: title,
       authorAndDate: authorAndDate,
       img: linkImg,
       resume: resume,
       body: newBody,
     };
-    return itemObj;
+    return obj;
   } catch (err) {
     console.log(
       "🚀 ~ file: newsbody.service.js ~ line 38 ~ getObjByItem ~ err",
       err
     );
-    const itemObj = [
+    const obj = [
       {
         title: "",
         authorAndDate: "",
@@ -51,7 +51,7 @@ const getObjByItem = async (url) => {
         body: "",
       },
     ];
-    return itemObj;
+    return obj;
   }
 };
 

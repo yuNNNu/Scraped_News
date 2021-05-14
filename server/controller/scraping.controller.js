@@ -6,29 +6,34 @@ const {
   getNoticiasItemLinks,
 } = require("../services/linkcapture.service");
 
+const url = "https://www.elmostrador.cl/dia/";
+const numberOfNewsNeeded = 12;
+
 const parseHome = async (req, res) => {
-  const url = "https://www.elmostrador.cl/dia/";
   try {
     const $ = await getHtml(url);
     const titularNewLink = await getTitularNewLink($);
     const secondaryNewsLink = await getSecondaryNewsLink($);
     const newsItemLinks = await getNoticiasItemLinks($);
-    var newsObj = await parseNotices(
+    var breakingNewsData = await parseNotices(
       titularNewLink,
       secondaryNewsLink,
       newsItemLinks,
-      null
+      null,
+      numberOfNewsNeeded
     );
-    if (newsObj["total"] < 10) {
-      let numOfLeftOverNews = 10 - newsObj["total"];
-      let newsObj2 = await parseMorePages(numOfLeftOverNews);
-      newsObj2["data"].map((x) => {
-        newsObj["data"].push(x);
+    const totalOfNewsReceived = breakingNewsData["total"];
+    if (totalOfNewsReceived < numberOfNewsNeeded) {
+      let numOfLeftOverNews = numberOfNewsNeeded - totalOfNewsReceived;
+      let leftOverNews = await parseMorePages(numOfLeftOverNews);
+      leftOverNews["data"].map((breakingNew) => {
+        breakingNewsData["data"].push(breakingNew);
+        breakingNewsData["total"] = breakingNewsData["total"] + 1;
       });
     }
 
     res.status(200).send({
-      data: newsObj,
+      data: breakingNewsData,
     });
   } catch (err) {
     console.log(
@@ -42,15 +47,16 @@ const parseHome = async (req, res) => {
 };
 
 const parseMorePages = async (numOfLeftOverNews) => {
-  const url = `https://www.elmostrador.cl/dia/page/2/`;
+  let nextPageUrl = `${url}page/2/`;
   try {
-    const $ = await getHtml(url);
+    const $ = await getHtml(nextPageUrl);
     const newsItemLinks = await getNoticiasItemLinks($);
     const newsObj = await parseNotices(
       null,
       null,
       newsItemLinks,
-      numOfLeftOverNews
+      numOfLeftOverNews,
+      numberOfNewsNeeded
     );
     return newsObj;
   } catch (err) {
@@ -65,14 +71,16 @@ const parseNotices = async (
   titularNewLink,
   secondaryNewsLink,
   newsItemLinks,
-  numOfLeftOverNews
+  numOfLeftOverNews,
+  numberOfNewsNeeded
 ) => {
   try {
     const newsObj = await getNewsObject(
       titularNewLink,
       secondaryNewsLink,
       newsItemLinks,
-      numOfLeftOverNews
+      numOfLeftOverNews,
+      numberOfNewsNeeded
     );
     return newsObj;
   } catch (err) {
