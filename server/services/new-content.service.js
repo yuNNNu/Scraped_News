@@ -1,18 +1,6 @@
 const cheerio = require("cheerio");
 const request = require("request-promise");
-
-const getHtml = async (url) => {
-  try {
-    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-    const response = await request({
-      uri: url,
-      transform: (body) => cheerio.load(body),
-    });
-    return response;
-  } catch (err) {
-    console.log("🚀 ~ file: services.js ~ line 12 ~ getHtml ~ err", err);
-  }
-};
+const { getHtml } = require("./get-html.service");
 
 const getObjByItem = async (url) => {
   try {
@@ -39,7 +27,7 @@ const getObjByItem = async (url) => {
     return obj;
   } catch (err) {
     console.log(
-      "🚀 ~ file: newsbody.service.js ~ line 38 ~ getObjByItem ~ err",
+      "🚀 ~ file: new-content.service.js ~ line 40 ~ getObjByItem ~ err",
       err
     );
     const obj = [

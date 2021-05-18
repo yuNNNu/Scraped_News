@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+// Animations
+import { Transition, animated } from "react-spring";
 class New extends React.Component {
   state = {
     _id: null,
@@ -7,6 +9,7 @@ class New extends React.Component {
     img: "",
     resume: "",
     body: [],
+    loading: false,
   };
 
   componentDidMount() {
@@ -23,35 +26,51 @@ class New extends React.Component {
       img: img,
       resume: resume,
       body: body,
+      loading: false,
     });
   };
 
   render() {
     return (
-      <div class="container">
-        <div class="row">
-          <div className="col-1"></div>
-          <div class="col-lg-10">
-            <h1 class="mt-4">{this.state.title}</h1>
-            <p class="lead">{this.state.authoranddate}</p>
-            <img
-              class="img-fluid rounded w-100"
-              src={this.state.img}
-              alt="..."
-            />
-            <hr />
-            <p class="lead">{this.state.resume}</p>
-            <blockquote class="blockquote">
-              {this.state.body.map((paragraph) => {
-                return <p>{paragraph}</p>;
-              })}
-            </blockquote>
+      <Transition
+        items={this.state.loading}
+        from={{ opacity: 0 }}
+        enter={{ opacity: 1 }}
+        leave={{ opacity: 0 }}
+      >
+        {(styles, item) =>
+          item ? (
+            ""
+          ) : (
+            <animated.div style={styles}>
+              <div class="container">
+                <div class="row">
+                  <div className="col-1"></div>
+                  <div class="col-lg-10">
+                    <h1 class="mt-4">{this.state.title}</h1>
+                    <p class="lead">{this.state.authoranddate}</p>
+                    <img
+                      class="img-fluid rounded w-100"
+                      src={this.state.img}
+                      alt="..."
+                    />
+                    <hr />
+                    <p class="lead">{this.state.resume}</p>
+                    <blockquote class="blockquote">
+                      {this.state.body.map((paragraph) => {
+                        return <p>{paragraph}</p>;
+                      })}
+                    </blockquote>
 
-            <hr />
-          </div>
-        </div>
-        <div className="col-1"></div>
-      </div>
+                    <hr />
+                  </div>
+                </div>
+                <div className="col-1"></div>
+              </div>
+            </animated.div>
+          )
+        }
+      </Transition>
     );
   }
 }

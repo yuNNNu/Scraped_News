@@ -6,8 +6,12 @@ export const getData = async () => {
   try {
     const response = await axios.get(url, {
       headers: headers,
+      raxConfig: {
+        retry: 3,
+        retryDelay: 3500,
+      },
     });
-    return response.data;
+    return response.data.data;
   } catch (err) {
     console.log("🚀 ~ file: api.service.js ~ line 12 ~ getData ~ err", err);
   }

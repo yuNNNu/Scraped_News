@@ -1,13 +1,14 @@
 const cheerio = require("cheerio");
-const { getHtml, getNewsObject } = require("../services/parses.service");
+const { getNewsObject } = require("../services/parses.service");
+const { getHtml } = require("../services/get-html.service");
 const {
   getTitularNewLink,
   getSecondaryNewsLink,
   getNoticiasItemLinks,
 } = require("../services/linkcapture.service");
 
-const url = "https://www.elmostrador.cl/dia/";
-const numberOfNewsNeeded = 12;
+const url = "https://www.elmostrador.cl/dia/"; // <-- Here it's the url to scrape(No modifiable)
+const numberOfNewsNeeded = 10; // <-- Here you can set how many news do you need to scrape
 
 const parseHome = async (req, res) => {
   try {

@@ -11,7 +11,6 @@ import {
   getSecondary,
   getOthers,
 } from "../services/news-selection";
-import _Data from "../assets/data/data.json";
 // Animations
 import { Transition, animated } from "react-spring";
 class Home extends React.Component {
@@ -26,7 +25,6 @@ class Home extends React.Component {
   fetchData = async () => {
     try {
       const data = this.props.data.data;
-      // const data = _Data.data;
       const primaryNewsArray = getPrimary(data);
       const secondaryNewsArray = getSecondary(data);
       const otherNewsArray = getOthers(data);

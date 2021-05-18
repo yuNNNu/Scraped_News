@@ -3,8 +3,6 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 // Pages
 import Home from "./pages/Home";
 import New from "./pages/New";
-// Hardcoding Data
-import _Data from "./assets/data/data.json";
 // Services
 import { getData } from "./services/api.service";
 // Animations
@@ -23,12 +21,6 @@ class App extends React.Component {
     this.setState({ loading: true, error: null });
     try {
       const data = await getData();
-      // const data = _Data.data;
-      console.log(
-        "🚀 ~ file: App.js ~ line 27 ~ App ~ fetchData= ~ data",
-        data
-      );
-
       this.setState({
         loading: false,
         data: data,
@@ -39,6 +31,9 @@ class App extends React.Component {
   };
 
   render() {
+    console.log(
+      "The scraped web server configuration it's returning 'Gateway 502 Time out', so for resolve this issue you must refresh the client for two or three times"
+    );
     if (this.state.loading === true) {
       return (
         <Transition
